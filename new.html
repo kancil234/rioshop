@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rio Shop - Online Shopping</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            background-color: #ee4d2d;
+            color: white;
+            padding: 10px 0;
+        }
+        
+        .container {
+            width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .search-bar {
+            display: flex;
+            width: 500px;
+        }
+        
+        .search-bar input {
+            width: 85%;
+            padding: 8px;
+            border: none;
+            border-radius: 2px 0 0 2px;
+        }
+        
+        .search-bar button {
+            width: 15%;
+            background-color: #ee4d2d;
+            color: white;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 0 2px 2px 0;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-actions a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+        }
+        
+        .cart-link {
+            position: relative;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: white;
+            color: #ee4d2d;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+        }
+        
+        .categories {
+            background-color: white;
+            padding: 15px 0;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 1px 0 rgba(0,0,0,0.05);
+        }
+        
+        .categories ul {
+            display: flex;
+            list-style: none;
+            justify-content: space-around;
+        }
+        
+        .categories ul li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: color 0.3s;
+        }
+        
+        .categories ul li a:hover {
+            color: #ee4d2d;
+        }
+        
+        .categories ul li a i {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .banner {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .banner img {
+            width: 100%;
+            border-radius: 2px;
+        }
+        
+        .promo-banner {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 10px 0;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .promo-banner::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+        
+        .promo-item {
+            flex: 0 0 auto;
+            width: 200px;
+            background-color: white;
+            border-radius: 2px;
+            overflow: hidden;
+            box-shadow: 0 1px 1px 0 rgba(0,0,0,0.05);
+        }
+        
+        .promo-item img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+        }
+        
+        .promo-info {
+            padding: 10px;
+            font-size: 12px;
+        }
+        
+        .promo-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .promo-time {
+            color: #ee4d2d;
+            font-size: 10px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #ee4d2d;
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        .section-title:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 70%;
+            width: 4px;
+            background-color: #ee4d2d;
+            border-radius: 4px;
+        }
+        
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 2px;
+            overflow: hidden;
+            box-shadow: 0 1px 1px 0 rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            position: relative;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 1px 20px 0 rgba(0,0,0,0.05);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            left: -4px;
+            background-color: #ee4d2d;
+            color: white;
+            font-size: 12px;
+            padding: 2px 4px;
+            border-radius: 2px;
+            z-index: 1;
+        }
+        
+        .product-badge:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            border-top: 4px solid #ee4d2d;
+            border-left: 4px solid transparent;
+            filter: brightness(60%);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 10px;
+        }
+        
+        .product-title {
+            font-size: 14px;
+            margin-bottom: 10px;
+            height: 36px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            color: #333;
+        }
+        
+        .product-price {
+            color: #ee4d2d;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .product-original-price {
+            color: #999;
+            font-size: 12px;
+            text-decoration: line-through;
+            margin-bottom: 5px;
+        }
+        
+        .product-sales {
+            color: #999;
+            font-size: 12px;
+        }
+        
+        .add-to-cart {
+            background-color: #ee4d2d;
+            color: white;
+            border: none;
+            padding: 5px 0;
+            border-radius: 2px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+            font-size: 14px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 100%;
+            background-color: white;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .cart-item {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 1px solid #f5f5f5;
+            border-radius: 2px;
+        }
+        
+        .cart-item-info {
+            flex: 1;
+        }
+        
+        .cart-item-title {
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .cart-item-price {
+            color: #ee4d2d;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+        
+        .quantity-btn {
+            width: 25px;
+            height: 25px;
+            background-color: #f5f5f5;
+            border: none;
+            cursor: pointer;
+            border-radius: 2px;
+            font-size: 14px;
+        }
+        
+        .quantity-input {
+            width: 40px;
+            text-align: center;
+            margin: 0 5px;
+            border: 1px solid #f5f5f5;
+            border-radius: 2px;
+        }
+        
+        .remove-item {
+            color: #999;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 5px;
+            display: inline-block;
+        }
+        
+        .cart-total {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: right;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .checkout-btn {
+            background-color: #ee4d2d;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 2px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .product-detail {
+            display: none;
+            background-color: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 2px;
+            box-shadow: 0 1px 1px 0 rgba(0,0,0,0.05);
+        }
+        
+        .product-detail-container {
+            display: flex;
+        }
+        
+        .detail-image-container {
+            width: 400px;
+            margin-right: 20px;
+        }
+        
+        .detail-main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: contain;
+            border: 1px solid #f5f5f5;
+            margin-bottom: 10px;
+        }
+        
+        .detail-thumbnails {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .detail-thumbnail {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border: 1px solid #f5f5f5;
+            cursor: pointer;
+        }
+        
+        .detail-info {
+            flex: 1;
+        }
+        
+        .detail-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .detail-price-container {
+            background-color: #fafafa;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 2px;
+        }
+        
+        .detail-price {
+            color: #ee4d2d;
+            font-size: 30px;
+            margin-bottom: 5px;
+        }
+        
+        .detail-original-price {
+            color: #999;
+            font-size: 16px;
+            text-decoration: line-through;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+        
+        .detail-discount {
+            background-color: #ee4d2d;
+            color: white;
+            font-size: 12px;
+            padding: 2px 4px;
+            border-radius: 2px;
+            margin-left: 10px;
+        }
+        
+        .detail-shipping {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .detail-quantity {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .detail-quantity-label {
+            margin-right: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .detail-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .detail-add-cart {
+            background-color: rgba(238,77,45,0.1);
+            color: #ee4d2d;
+            border: 1px solid #ee4d2d;
+            padding: 12px 40px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .detail-buy-now {
+            background-color: #ee4d2d;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .detail-description {
+            margin-top: 30px;
+        }
+        
+        .detail-description h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .detail-description p {
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .back-to-list {
+            background-color: #f5f5f5;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            border-radius: 2px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        
+        .checkout-form {
+            margin-top: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+        }
+        
+        .payment-methods {
+            margin-top: 20px;
+        }
+        
+        .payment-method {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+        
+        .payment-method input {
+            margin-right: 10px;
+        }
+        
+        .payment-method.active {
+            border-color: #ee4d2d;
+        }
+        
+        .order-summary {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fafafa;
+            border-radius: 2px;
+        }
+        
+        .order-summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .order-summary-total {
+            font-weight: bold;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        .empty-cart i {
+            font-size: 50px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .empty-cart p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .empty-cart button {
+            background-color: #ee4d2d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+        
+        .active-category {
+            color: #ee4d2d !important;
+            font-weight: bold;
+        }
+        
+        /* Track Order Styles */
+        .track-order {
+            background-color: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 2px;
+            box-shadow: 0 1px 1px 0 rgba(0,0,0,0.05);
+        }
+        
+        .track-order-form {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .track-order-form input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 2px 0 0 2px;
+        }
+        
+        .track-order-form button {
+            background-color: #ee4d2d;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 0 2px 2px 0;
+            cursor: pointer;
+        }
+        
+        .order-status {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .order-status.active {
+            display: block;
+        }
+        
+        .order-info {
+            margin-bottom: 20px;
+        }
+        
+        .order-info-item {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .order-info-label {
+            width: 120px;
+            color: #666;
+        }
+        
+        .order-info-value {
+            flex: 1;
+            font-weight: bold;
+        }
+        
+        .status-timeline {
+            position: relative;
+            padding-left: 20px;
+            margin-top: 30px;
+        }
+        
+        .status-timeline:before {
+            content: "";
+            position: absolute;
+            left: 7px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #ddd;
+        }
+        
+        .status-step {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .status-step:last-child {
+            margin-bottom: 0;
+        }
+        
+        .status-step:before {
+            content: "";
+            position: absolute;
+            left: -20px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #ddd;
+        }
+        
+        .status-step.active:before {
+            background-color: #ee4d2d;
+        }
+        
+        .status-step.completed:before {
+            background-color: #00b894;
+        }
+        
+        .status-date {
+            color: #666;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .order-products {
+            margin-top: 30px;
+        }
+        
+        .order-product {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .order-product-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 1px solid #f5f5f5;
+        }
+        
+        .order-product-info {
+            flex: 1;
+        }
+        
+        .order-product-title {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .order-product-price {
+            color: #ee4d2d;
+            font-weight: bold;
+        }
+        
+        .order-product-quantity {
+            color: #666;
+            font-size: 12px;
+        }
+        
+        .no-order {
+            text-align: center;
+            padding: 40px 0;
+            color: #666;
+        }
+        
+        .no-order i {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-top">
+                <div class="logo">RioShop</div>
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Search for products...">
+                    <button id="search-button"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="user-actions">
+                    <a href="#" id="track-order-link"><i class="fas fa-truck"></i> Track Order</a>
+                    <a href="#"><i class="fas fa-user"></i> Sign Up</a>
+                    <a href="#"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    <a href="#" class="cart-link" id="open-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <nav class="categories">
+        <div class="container">
+            <ul id="category-list">
+                <li><a href="#" class="active-category" data-category="all"><i class="fas fa-home"></i> All</a></li>
+                <li><a href="#" data-category="fashion"><i class="fas fa-tshirt"></i> Fashion</a></li>
+                <li><a href="#" data-category="electronics"><i class="fas fa-mobile-alt"></i> Electronics</a></li>
+                <li><a href="#" data-category="home"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#" data-category="sports"><i class="fas fa-running"></i> Sports</a></li>
+                <li><a href="#" data-category="health"><i class="fas fa-heart"></i> Health</a></li>
+                <li><a href="#" data-category="groceries"><i class="fas fa-utensils"></i> Groceries</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <main class="container">
+        <div class="banner">
+            <img src="banenr.jpeg" alt="Promotional Banner">
+        </div>
+        
+        <div class="promo-banner">
+            <div class="promo-item">
+                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Promo 1">
+                <div class="promo-info">
+                    <div class="promo-title">Flash Sale</div>
+                    <div class="promo-time">Ends in 12:34:56</div>
+                </div>
+            </div>
+            <div class="promo-item">
+                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Promo 2">
+                <div class="promo-info">
+                    <div class="promo-title">Free Shipping</div>
+                    <div class="promo-time">Min. spend $20</div>
+                </div>
+            </div>
+            <div class="promo-item">
+                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Promo 3">
+                <div class="promo-info">
+                    <div class="promo-title">New User Deal</div>
+                    <div class="promo-time">$5 off $20</div>
+                </div>
+            </div>
+            <div class="promo-item">
+                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Promo 4">
+                <div class="promo-info">
+                    <div class="promo-title">Tech Sale</div>
+                    <div class="promo-time">3 days left</div>
+                </div>
+            </div>
+            <div class="promo-item">
+                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Promo 5">
+                <div class="promo-info">
+                    <div class="promo-title">Fashion Week</div>
+                    <div class="promo-time">50% off</div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="back-to-list" id="back-to-list" style="display: none;"><i class="fas fa-arrow-left"></i> Back to products</button>
+        
+        <div id="product-list-view">
+            <h2 class="section-title" id="category-title">Popular Products</h2>
+            <div class="product-list" id="product-list">
+                <!-- Products will be loaded via JavaScript -->
+            </div>
+        </div>
+        
+        <div class="product-detail" id="product-detail">
+            <!-- Product detail will be loaded via JavaScript -->
+        </div>
+        
+        <div class="track-order" id="track-order-view" style="display: none;">
+            <h2 class="section-title">Track Your Order</h2>
+            <div class="track-order-form">
+                <input type="text" id="order-number" placeholder="Enter your order number">
+                <button id="track-order-button"><i class="fas fa-search"></i> Track</button>
+            </div>
+            <div class="order-status" id="order-status">
+                <!-- Order status will be loaded via JavaScript -->
+                <div class="no-order">
+                    <i class="fas fa-search"></i>
+                    <p>Enter your order number to track your order status</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="modal" id="cart-modal">
+        <div class="modal-header">
+            <h3>Your Cart</h3>
+            <button class="close-modal" id="close-cart">×</button>
+        </div>
+        <div id="cart-items">
+            <!-- Cart items will be loaded via JavaScript -->
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Your cart is empty</p>
+                <button id="start-shopping">Start Shopping</button>
+            </div>
+        </div>
+        <div class="cart-total" id="cart-total-container" style="display: none;">
+            Total: $<span id="cart-total">0.00</span>
+        </div>
+        <button class="checkout-btn" id="proceed-checkout" style="display: none;">PROCEED TO CHECKOUT</button>
+    </div>
+    
+    <div class="modal" id="checkout-modal">
+        <div class="modal-header">
+            <h3>Checkout</h3>
+            <button class="close-modal" id="close-checkout">×</button>
+        </div>
+        <div class="checkout-form">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Shipping Address</label>
+                <textarea id="address" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" required>
+            </div>
+            
+            <h4>Payment Method</h4>
+            <div class="payment-methods">
+                <label class="payment-method active">
+                    <input type="radio" name="payment" value="credit" checked> Credit/Debit Card
+                </label>
+                <label class="payment-method">
+                    <input type="radio" name="payment" value="paypal"> PayPal
+                </label>
+                <label class="payment-method">
+                    <input type="radio" name="payment" value="cod"> Cash on Delivery
+                </label>
+            </div>
+            
+            <div class="order-summary">
+                <h4>Order Summary</h4>
+                <div id="checkout-items">
+                    <!-- Order items will be loaded via JavaScript -->
+                </div>
+                <div class="order-summary-item order-summary-total">
+                    <span>Total:</span>
+                    <span id="checkout-total">$0.00</span>
+                </div>
+            </div>
+            
+            <button class="checkout-btn" id="place-order">PLACE ORDER</button>
+        </div>
+    </div>
+    
+    <script>
+        // Sample product data with categories
+        const products = [
+            {
+                id: 1,
+                title: "Men's Casual T-Shirt Cotton Short Sleeve",
+                price: 12.99,
+                originalPrice: 19.99,
+                sales: "1.2k sold",
+                image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                description: "Comfortable and stylish men's casual t-shirt made from 100% cotton. Available in multiple colors. Perfect for everyday wear.",
+                discount: 35,
+                shipping: "Free shipping",
+                thumbnails: [
+                    "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1527719327859-c6ce80353573?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                category: "fashion"
+            },
+            {
+                id: 2,
+                title: "Wireless Bluetooth Headphones with Microphone",
+                price: 45.99,
+                originalPrice: 89.99,
+                sales: "3.5k sold",
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                description: "High-quality wireless Bluetooth headphones with built-in microphone. Features noise cancellation and 20-hour battery life.",
+                discount: 49,
+                shipping: "Free shipping",
+                thumbnails: [
+                    "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                category: "electronics"
+            },
+            {
+                id: 3,
+                title: "Smart Watch with Fitness Tracker",
+                price: 79.99,
+                originalPrice: 129.99,
+                sales: "2.1k sold",
+                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                description: "Smart watch with fitness tracker, heart rate monitor, and sleep tracker. Compatible with iOS and Android devices.",
+                discount: 38,
+                shipping: "$2.99 shipping",
+                thumbnails: [
+                    "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1558126319-c9feecbf57ee?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                category: "electronics"
+            },
+            {
+                id: 4,
+                title: "Women's Running Shoes Lightweight Sneakers",
+                price: 34.99,
+                originalPrice: 49.99,
+                sales: "1.8k sold",
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                description: "Lightweight women's running shoes with cushioned soles for maximum comfort. Available in multiple colors and sizes.",
+                discount: 30,
+                shipping: "Free shipping",
+                thumbnails: [
+                    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1465877783223-4eba513e27c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                category: "fashion"
+            },
+            {
+                id: 5,
+                title: "Stainless Steel Water Bottle 750ml",
+                price: 15.99,
+                originalPrice: 24.99,
+                sales: "4.2k sold",
+                image: "https://images.unsplash.com/photo-1589365278144-c9e705f843ba?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                description: "Premium stainless steel water bottle that keeps drinks cold for 24 hours or hot for 12 hours. Leak-proof design.",
+                discount: 36,
+                shipping: "Free shipping",
+                thumbnails: [
+                    "https://images.unsplash.com/photo-1589365278144-c9e705f843ba?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1602143407151-7111542de6e8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1607522370275-1421ea42b982?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                category: "home"
+            },
+            {
+                id: 6,
+                title: "Wireless Phone Charger Stand 15W Fast Charging",
+                price: 19.99,
+                originalPrice: 29.99,
+                sales: "3.7k sold",
+                image: "https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                description: "Fast wireless charger stand compatible with Qi-enabled devices. Charges through most phone cases up to 5mm thick.",
+                discount: 33,
+                shipping: "$1.99 shipping",
+                thumbnails: [
+                    "https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1605787020600-b9ebd5df1d07?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1601784551446-20f9a5d2a3d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                category: "electronics"
+            },
+            {
+                id: 7,
+                title: "Laptop Backpack with USB Charging Port",
+                price: 29.99,
+                originalPrice: 49.99,
+                sales: "2.9k sold",
+                image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                description: "Durable laptop backpack with built-in USB charging port and anti-theft design. Fits up to 15.6 inch laptops.",
+                discount: 40,
+                shipping: "Free shipping",
+                thumbnails: [
+                    "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1562547256-2c5ee93b60b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                category: "fashion"
+            },
+            {
+                id: 8,
+                title: "Air Fryer 5.5L Digital Touch Screen",
+                price: 89.99,
+                originalPrice: 129.99,
+                sales: "1.5k sold",
+                image: "https://images.unsplash.com/photo-1611791484670-ce19b801d192?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                description: "Large capacity air fryer with digital touch screen and 8 preset cooking functions. 85% less fat than traditional frying.",
+                discount: 31,
+                shipping: "Free shipping",
+                thumbnails: [
+                    "https://images.unsplash.com/photo-1611791484670-ce19b801d192?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1611791485440-8d2c228b2e9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                category: "home"
+            },
+            {
+                id: 9,
+                title: "Yoga Mat Non-Slip with Carrying Strap",
+                price: 24.99,
+                originalPrice: 39.99,
+                sales: "2.3k sold",
+                image: "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                description: "Eco-friendly yoga mat with non-slip surface and carrying strap. Extra thick for joint protection during workouts.",
+                discount: 38,
+                shipping: "Free shipping",
+                thumbnails: [
+                    "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1545205597-3d9d02c29597?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1545389336-cf090694435e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                category: "sports"
+            },
+            {
+                id: 10,
+                title: "Lego City Builder",
+                price: 179.99,
+                originalPrice: 599.99,
+                sales: "9.7k sold",
+                image: "https://miro.medium.com/v2/resize:fit:1400/1*etJ_tWi3aTc48BFtezAvaQ.jpeg",
+                description: "Brand new city lego designer for kids creativity",
+                discount: 33,
+                shipping: "$10.99 shipping",
+                thumbnails: [
+                    "https://images.unsplash.com/photo-1593998066526-65fcab3021a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1583944824160-9d559ce91a4a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1583947581924-860bda6a26df?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                category: "health"
+            },
+            {
+                id: 11,
+                title: "Organic Green Tea 100 Tea Bags",
+                price: 9.99,
+                originalPrice: 14.99,
+                sales: "3.1k sold",
+                image: "https://images.unsplash.com/photo-1561047029-3000c68339ca?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                description: "Premium organic green tea with 100 individually wrapped tea bags. Rich in antioxidants and naturally caffeine free.",
+                discount: 33,
+                shipping: "Free shipping",
+                thumbnails: [
+                    "https://images.unsplash.com/photo-1561047029-3000c68339ca?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1558160074-4d7d8bdf4256?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                category: "groceries"
+            },
+            {
+                id: 12,
+                title: "Lego For Kids",
+                price: 2.99,
+                originalPrice: 44.99,
+                sales: "1.9k sold",
+                image: "https://images.unsplash.com/photo-1599481238640-4c1288750d7a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                description: "Real lego suitable for kids.",
+                discount: 29,
+                shipping: "Free shipping",
+                thumbnails: [
+                    "https://images.unsplash.com/photo-1599481238640-4c1288750d7a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    // "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    // "https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                category: "toys"
+            }
+        ];
+        
+        // Sample order data
+        const sampleOrder = {
+            id: "ORD-123456",
+            date: "2023-05-15",
+            status: "shipped",
+            customer: {
+                name: "John Doe",
+                email: "john.doe@example.com",
+                address: "123 Main St, Anytown, USA",
+                phone: "+1 555-123-4567"
+            },
+            products: [
+                {
+                    id: 2,
+                    title: "Wireless Bluetooth Headphones with Microphone",
+                    price: 45.99,
+                    quantity: 1,
+                    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                },
+                {
+                    id: 5,
+                    title: "Stainless Steel Water Bottle 750ml",
+                    price: 15.99,
+                    quantity: 2,
+                    image: "https://images.unsplash.com/photo-1589365278144-c9e705f843ba?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                }
+            ],
+            shipping: 5.00,
+            paymentMethod: "credit",
+            statusHistory: [
+                {
+                    status: "ordered",
+                    date: "2023-05-15 10:30 AM",
+                    completed: true
+                },
+                {
+                    status: "processed",
+                    date: "2023-05-15 2:45 PM",
+                    completed: true
+                },
+                {
+                    status: "shipped",
+                    date: "2023-05-16 9:15 AM",
+                    completed: true
+                },
+                {
+                    status: "out for delivery",
+                    date: "2023-05-18",
+                    completed: false
+                },
+                {
+                    status: "delivered",
+                    date: "",
+                    completed: false
+                }
+            ]
+        };
+        
+        // Shopping cart data
+        let cart = [];
+        let currentCategory = "all";
+        let currentSearch = "";
+        let currentView = "products"; // 'products' or 'track-order'
+        
+        // DOM elements
+        const productListEl = document.getElementById('product-list');
+        const productDetailEl = document.getElementById('product-detail');
+        const productListViewEl = document.getElementById('product-list-view');
+        const trackOrderViewEl = document.getElementById('track-order-view');
+        const orderStatusEl = document.getElementById('order-status');
+        const backToListBtn = document.getElementById('back-to-list');
+        const cartModalEl = document.getElementById('cart-modal');
+        const checkoutModalEl = document.getElementById('checkout-modal');
+        const openCartBtn = document.getElementById('open-cart');
+        const closeCartBtn = document.getElementById('close-cart');
+        const closeCheckoutBtn = document.getElementById('close-checkout');
+        const cartItemsEl = document.getElementById('cart-items');
+        const checkoutItemsEl = document.getElementById('checkout-items');
+        const cartTotalEl = document.getElementById('cart-total');
+        const checkoutTotalEl = document.getElementById('checkout-total');
+        const cartCountEl = document.getElementById('cart-count');
+        const cartTotalContainer = document.getElementById('cart-total-container');
+        const proceedCheckoutBtn = document.getElementById('proceed-checkout');
+        const placeOrderBtn = document.getElementById('place-order');
+        const startShoppingBtn = document.getElementById('start-shopping');
+        const overlayEl = document.getElementById('overlay');
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
+        const categoryList = document.getElementById('category-list');
+        const categoryTitle = document.getElementById('category-title');
+        const trackOrderLink = document.getElementById('track-order-link');
+        const trackOrderButton = document.getElementById('track-order-button');
+        const orderNumberInput = document.getElementById('order-number');
+        
+        // Render product list based on current category and search
+        function renderProductList() {
+            productListEl.innerHTML = '';
+            
+            let filteredProducts = products;
+            
+            // Filter by category
+            if (currentCategory !== "all") {
+                filteredProducts = filteredProducts.filter(product => product.category === currentCategory);
+            }
+            
+            // Filter by search
+            if (currentSearch) {
+                const searchTerm = currentSearch.toLowerCase();
+                filteredProducts = filteredProducts.filter(product => 
+                    product.title.toLowerCase().includes(searchTerm) || 
+                    product.description.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Update category title
+            if (currentSearch) {
+                categoryTitle.textContent = `Search Results for "${currentSearch}"`;
+            } else if (currentCategory === "all") {
+                categoryTitle.textContent = "Popular Products";
+            } else {
+                const categoryName = document.querySelector(`[data-category="${currentCategory}"]`).textContent;
+                categoryTitle.textContent = categoryName;
+            }
+            
+            // Display filtered products
+            if (filteredProducts.length === 0) {
+                productListEl.innerHTML = '<p>No products found. Try a different search or category.</p>';
+                return;
+            }
+            
+            filteredProducts.forEach(product => {
+                renderProductCard(product, productListEl);
+            });
+            
+            // Add click events to product cards
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('add-to-cart')) {
+                        const productId = parseInt(card.getAttribute('data-id'));
+                        showProductDetail(productId);
+                    }
+                });
+            });
+            
+            // Add click events to add to cart buttons
+            document.querySelectorAll('.add-to-cart').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const productId = parseInt(btn.getAttribute('data-id'));
+                    addToCart(productId);
+                });
+            });
+        }
+        
+        // Render a single product card
+        function renderProductCard(product, container) {
+            const productEl = document.createElement('div');
+            productEl.className = 'product-card';
+            productEl.setAttribute('data-id', product.id);
+            
+            let badgeHtml = '';
+            if (product.discount) {
+                badgeHtml = `<div class="product-badge">-${product.discount}%</div>`;
+            }
+            
+            productEl.innerHTML = `
+                ${badgeHtml}
+                <img src="${product.image}" alt="${product.title}" class="product-image">
+                <div class="product-info">
+                    <div class="product-title">${product.title}</div>
+                    <div class="product-price">$${product.price.toFixed(2)}</div>
+                    ${product.originalPrice ? `<div class="product-original-price">$${product.originalPrice.toFixed(2)}</div>` : ''}
+                    <div class="product-sales">${product.sales}</div>
+                    <button class="add-to-cart" data-id="${product.id}">Add to Cart</button>
+                </div>
+            `;
+            container.appendChild(productEl);
+        }
+        
+        // Show product detail
+        function showProductDetail(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            let thumbnailsHtml = '';
+            product.thumbnails.forEach((thumb, index) => {
+                thumbnailsHtml += `<img src="${thumb}" alt="Thumbnail ${index + 1}" class="detail-thumbnail" data-image="${thumb}">`;
+            });
+            
+            productDetailEl.innerHTML = `
+                <div class="product-detail-container">
+                    <div class="detail-image-container">
+                        <img src="${product.image}" alt="${product.title}" class="detail-main-image" id="main-product-image">
+                        <div class="detail-thumbnails">
+                            ${thumbnailsHtml}
+                        </div>
+                    </div>
+                    <div class="detail-info">
+                        <h1 class="detail-title">${product.title}</h1>
+                        <div class="detail-price-container">
+                            <div class="detail-price">$${product.price.toFixed(2)}</div>
+                            ${product.originalPrice ? `
+                                <div>
+                                    <span class="detail-original-price">$${product.originalPrice.toFixed(2)}</span>
+                                    ${product.discount ? `<span class="detail-discount">-${product.discount}%</span>` : ''}
+                                </div>
+                            ` : ''}
+                            <div class="detail-shipping">${product.shipping}</div>
+                        </div>
+                        <div class="detail-quantity">
+                            <span class="detail-quantity-label">Quantity:</span>
+                            <button class="quantity-btn minus" id="detail-quantity-minus">-</button>
+                            <input type="text" class="quantity-input" id="detail-quantity-input" value="1" readonly>
+                            <button class="quantity-btn plus" id="detail-quantity-plus">+</button>
+                        </div>
+                        <div class="detail-actions">
+                            <button class="detail-add-cart" data-id="${product.id}">ADD TO CART</button>
+                            <button class="detail-buy-now" data-id="${product.id}">BUY NOW</button>
+                        </div>
+                        <div class="detail-description">
+                            <h3>Product Description</h3>
+                            <p>${product.description}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add thumbnail click events
+            document.querySelectorAll('.detail-thumbnail').forEach(thumb => {
+                thumb.addEventListener('click', () => {
+                    document.getElementById('main-product-image').src = thumb.getAttribute('data-image');
+                });
+            });
+            
+            // Add quantity button events
+            document.getElementById('detail-quantity-minus').addEventListener('click', () => {
+                const input = document.getElementById('detail-quantity-input');
+                let value = parseInt(input.value);
+                if (value > 1) {
+                    input.value = value - 1;
+                }
+            });
+            
+            document.getElementById('detail-quantity-plus').addEventListener('click', () => {
+                const input = document.getElementById('detail-quantity-input');
+                let value = parseInt(input.value);
+                input.value = value + 1;
+            });
+            
+            // Add add to cart button event
+            document.querySelector('.detail-add-cart').addEventListener('click', () => {
+                const quantity = parseInt(document.getElementById('detail-quantity-input').value);
+                addToCart(productId, quantity);
+            });
+            
+            // Add buy now button event
+            document.querySelector('.detail-buy-now').addEventListener('click', () => {
+                const quantity = parseInt(document.getElementById('detail-quantity-input').value);
+                addToCart(productId, quantity);
+                openCart();
+            });
+            
+            productListViewEl.style.display = 'none';
+            productDetailEl.style.display = 'block';
+            backToListBtn.style.display = 'block';
+        }
+        
+        // Render order status
+        function renderOrderStatus(order) {
+            let productsHtml = '';
+            order.products.forEach(product => {
+                productsHtml += `
+                    <div class="order-product">
+                        <img src="${product.image}" alt="${product.title}" class="order-product-image">
+                        <div class="order-product-info">
+                            <div class="order-product-title">${product.title}</div>
+                            <div class="order-product-price">$${product.price.toFixed(2)}</div>
+                            <div class="order-product-quantity">Quantity: ${product.quantity}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            let statusHtml = '';
+            order.statusHistory.forEach((step, index) => {
+                let statusClass = '';
+                if (step.completed) {
+                    statusClass = 'completed';
+                } else if (index === order.statusHistory.findIndex(s => !s.completed)) {
+                    statusClass = 'active';
+                }
+                
+                statusHtml += `
+                    <div class="status-step ${statusClass}">
+                        <div class="status-name">${step.status}</div>
+                        ${step.date ? `<div class="status-date">${step.date}</div>` : ''}
+                    </div>
+                `;
+            });
+            
+            orderStatusEl.innerHTML = `
+                <div class="order-info">
+                    <div class="order-info-item">
+                        <div class="order-info-label">Order Number:</div>
+                        <div class="order-info-value">${order.id}</div>
+                    </div>
+                    <div class="order-info-item">
+                        <div class="order-info-label">Order Date:</div>
+                        <div class="order-info-value">${order.date}</div>
+                    </div>
+                    <div class="order-info-item">
+                        <div class="order-info-label">Status:</div>
+                        <div class="order-info-value" style="color: #ee4d2d; text-transform: capitalize;">${order.status}</div>
+                    </div>
+                </div>
+                
+                <div class="status-timeline">
+                    ${statusHtml}
+                </div>
+                
+                <div class="order-products">
+                    <h4>Order Details</h4>
+                    ${productsHtml}
+                </div>
+            `;
+        }
+        
+        // Show track order view
+        function showTrackOrderView() {
+            currentView = "track-order";
+            productListViewEl.style.display = 'none';
+            productDetailEl.style.display = 'none';
+            trackOrderViewEl.style.display = 'block';
+            backToListBtn.style.display = 'block';
+        }
+        
+        // Back to product list
+        backToListBtn.addEventListener('click', () => {
+            currentView = "products";
+            productListViewEl.style.display = 'block';
+            productDetailEl.style.display = 'none';
+            trackOrderViewEl.style.display = 'none';
+            backToListBtn.style.display = 'none';
+        });
+        
+        // Add to cart
+        function addToCart(productId, quantity = 1) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({
+                    id: product.id,
+                    title: product.title,
+                    price: product.price,
+                    image: product.image,
+                    quantity: quantity
+                });
+            }
+            
+            updateCart();
+            showNotification(`${product.title} added to cart`);
+        }
+        
+        // Show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = '#4CAF50';
+            notification.style.color = 'white';
+            notification.style.padding = '15px';
+            notification.style.borderRadius = '4px';
+            notification.style.zIndex = '1000';
+            notification.style.animation = 'fadeIn 0.5s, fadeOut 0.5s 2.5s';
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        // Update cart
+        function updateCart() {
+            // Update cart count
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCountEl.textContent = totalItems;
+            
+            // Update cart items
+            if (cart.length === 0) {
+                cartItemsEl.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>Your cart is empty</p>
+                        <button id="start-shopping">Start Shopping</button>
+                    </div>
+                `;
+                cartTotalContainer.style.display = 'none';
+                proceedCheckoutBtn.style.display = 'none';
+                
+                // Add event to start shopping button
+                document.getElementById('start-shopping').addEventListener('click', closeCart);
+                return;
+            }
+            
+            cartItemsEl.innerHTML = '';
+            let total = 0;
+            
+            cart.forEach(item => {
+                const itemEl = document.createElement('div');
+                itemEl.className = 'cart-item';
+                itemEl.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}" class="cart-item-image">
+                    <div class="cart-item-info">
+                        <div class="cart-item-title">${item.title}</div>
+                        <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn minus" data-id="${item.id}">-</button>
+                            <input type="text" class="quantity-input" value="${item.quantity}" readonly>
+                            <button class="quantity-btn plus" data-id="${item.id}">+</button>
+                        </div>
+                        <div class="remove-item" data-id="${item.id}">Remove</div>
+                    </div>
+                `;
+                cartItemsEl.appendChild(itemEl);
+                
+                total += item.price * item.quantity;
+            });
+            
+            cartTotalEl.textContent = total.toFixed(2);
+            cartTotalContainer.style.display = 'block';
+            proceedCheckoutBtn.style.display = 'block';
+            
+            // Add quantity button events
+            document.querySelectorAll('.quantity-btn.minus').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = parseInt(btn.getAttribute('data-id'));
+                    updateCartItemQuantity(id, -1);
+                });
+            });
+            
+            document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = parseInt(btn.getAttribute('data-id'));
+                    updateCartItemQuantity(id, 1);
+                });
+            });
+            
+            // Add remove button events
+            document.querySelectorAll('.remove-item').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = parseInt(btn.getAttribute('data-id'));
+                    removeFromCart(id);
+                });
+            });
+        }
+        
+        // Update checkout summary
+        function updateCheckoutSummary() {
+            checkoutItemsEl.innerHTML = '';
+            let subtotal = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                
+                const itemEl = document.createElement('div');
+                itemEl.className = 'order-summary-item';
+                itemEl.innerHTML = `
+                    <span>${item.title} x ${item.quantity}</span>
+                    <span>$${itemTotal.toFixed(2)}</span>
+                `;
+                checkoutItemsEl.appendChild(itemEl);
+            });
+            
+            // Add shipping (fixed $5 for demo)
+            const shipping = 5.00;
+            
+            const shippingEl = document.createElement('div');
+            shippingEl.className = 'order-summary-item';
+            shippingEl.innerHTML = `
+                <span>Shipping</span>
+                <span>$${shipping.toFixed(2)}</span>
+            `;
+            checkoutItemsEl.appendChild(shippingEl);
+            
+            const total = subtotal + shipping;
+            checkoutTotalEl.textContent = `$${total.toFixed(2)}`;
+        }
+        
+        // Update cart item quantity
+        function updateCartItemQuantity(productId, change) {
+            const item = cart.find(item => item.id === productId);
+            if (!item) return;
+            
+            item.quantity += change;
+            
+            if (item.quantity <= 0) {
+                cart = cart.filter(item => item.id !== productId);
+            }
+            
+            updateCart();
+        }
+        
+        // Remove from cart
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCart();
+        }
+        
+        // Open cart
+        function openCart() {
+            cartModalEl.style.display = 'block';
+            overlayEl.style.display = 'block';
+        }
+        
+        // Close cart
+        function closeCart() {
+            cartModalEl.style.display = 'none';
+            overlayEl.style.display = 'none';
+        }
+        
+        // Open checkout
+        function openCheckout() {
+            updateCheckoutSummary();
+            checkoutModalEl.style.display = 'block';
+            cartModalEl.style.display = 'none';
+        }
+        
+        // Close checkout
+        function closeCheckout() {
+            checkoutModalEl.style.display = 'none';
+            overlayEl.style.display = 'none';
+        }
+        
+        // Track order
+        function trackOrder() {
+            const orderNumber = orderNumberInput.value.trim();
+            if (!orderNumber) {
+                alert('Please enter your order number');
+                return;
+            }
+            
+            // In a real app, you would fetch order details from your server
+            // For demo purposes, we'll use the sample order
+            if (orderNumber === sampleOrder.id) {
+                renderOrderStatus(sampleOrder);
+            } else {
+                orderStatusEl.innerHTML = `
+                    <div class="no-order">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>Order not found. Please check your order number and try again.</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Open cart button event
+        openCartBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openCart();
+        });
+        
+        // Close cart button event
+        closeCartBtn.addEventListener('click', closeCart);
+        
+        // Close checkout button event
+        closeCheckoutBtn.addEventListener('click', closeCheckout);
+        
+        // Proceed to checkout button event
+        proceedCheckoutBtn.addEventListener('click', openCheckout);
+        
+        // Place order button event
+        placeOrderBtn.addEventListener('click', () => {
+            // Simple validation
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const address = document.getElementById('address').value;
+            const phone = document.getElementById('phone').value;
+            
+            if (!name || !email || !address || !phone) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // In a real app, you would send this data to your server
+            alert('Order placed successfully! Thank you for your purchase.Your order id will send through email and whatsapp');
+            
+            // Clear cart and close modals
+            cart = [];
+            updateCart();
+            closeCheckout();
+        });
+        
+        // Track order link event
+        trackOrderLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showTrackOrderView();
+        });
+        
+        // Track order button event
+        trackOrderButton.addEventListener('click', trackOrder);
+        
+        // Track order on Enter key
+        orderNumberInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                trackOrder();
+            }
+        });
+        
+        // Overlay click event
+        overlayEl.addEventListener('click', () => {
+            closeCart();
+            closeCheckout();
+        });
+        
+        // Search functionality
+        searchButton.addEventListener('click', () => {
+            currentSearch = searchInput.value.trim();
+            renderProductList();
+        });
+        
+        // Search on Enter key
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                currentSearch = searchInput.value.trim();
+                renderProductList();
+            }
+        });
+        
+        // Category filtering
+        categoryList.addEventListener('click', (e) => {
+            e.preventDefault();
+            const categoryLink = e.target.closest('a');
+            if (!categoryLink) return;
+            
+            // Update active category
+            document.querySelectorAll('#category-list a').forEach(link => {
+                link.classList.remove('active-category');
+            });
+            categoryLink.classList.add('active-category');
+            
+            // Update current category and render products
+            currentCategory = categoryLink.getAttribute('data-category');
+            currentSearch = '';
+            searchInput.value = '';
+            renderProductList();
+        });
+        
+        // Payment method selection
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.payment-method')) {
+                document.querySelectorAll('.payment-method').forEach(method => {
+                    method.classList.remove('active');
+                });
+                e.target.closest('.payment-method').classList.add('active');
+            }
+        });
+        
+        // Initialize
+        renderProductList();
+        
+        // Add some CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            
+            @keyframes fadeOut {
+                from { opacity: 1; transform: translateY(0); }
+                to { opacity: 0; transform: translateY(20px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
